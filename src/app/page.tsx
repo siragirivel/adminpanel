@@ -65,12 +65,13 @@ export default function LoginPage() {
               <Image
                 src="/Siragiri.png"
                 alt="Siragirvel"
-                width={64}
-                height={64}
-                className="w-16 h-16 object-contain rounded-2xl shadow-md"
+                width={280}
+                height={80}
+                className="h-14 w-auto object-contain"
+                priority
               />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 leading-tight">Sirigirvel</h1>
+            <h1 className="sr-only">Sirigirvel</h1>
             <p className="text-zinc-500 text-sm">Sign in to your workshop account</p>
           </div>
 

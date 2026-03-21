@@ -418,13 +418,14 @@ export function QuotationViewer({ quotationId }: { quotationId: string }) {
 
             {/* Signature Section */}
             <div className="mt-12 grid grid-cols-2 gap-20">
-              <div className="text-center pt-8 border-t border-slate-100">
+              <div className="text-center pt-8">
+                <div className="text-slate-400 mb-2">_______________________</div>
                 <div className="text-sm font-bold text-slate-900 mb-1">Customer Signature</div>
-                <div className="text-[11px] text-slate-400 font-medium">Authorized by the User</div>
               </div>
-              <div className="text-center pt-8 border-t border-slate-100">
+              <div className="text-center pt-8">
+                <div className="text-slate-400 mb-2">_______________________</div>
                 <div className="text-sm font-bold text-slate-900 mb-1">Authorized Signature</div>
-                <div className="text-[11px] text-slate-700 font-bold uppercase tracking-wider">For SIRAGIRI VEL AUTOMOBILES</div>
+                <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">For SIRAGIRI VEL AUTOMOBILES</div>
               </div>
             </div>
 

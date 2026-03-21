@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { 
   LayoutDashboard, 
   Car, 
@@ -107,10 +108,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Brand */}
       <div className="p-[20px_18px_16px] border-b border-white/5">
         <div className="flex items-start justify-between gap-3 animate-in zoom-in duration-700">
-          <div>
-          <div className="text-[14px] font-semibold text-white tracking-tight leading-tight">Sirigirvel</div>
-          <div className="text-[9px] text-white/30 tracking-[0.1em] uppercase font-medium mt-0.5">Workshop Management</div>
-          </div>
+          <Link href="/dashboard" onClick={onClose} className="flex flex-col gap-0.5 transition-opacity hover:opacity-80">
+              <span className="text-[14px] font-bold text-white tracking-tight leading-tight">Sirigirvel</span>
+              <span className="text-[9px] text-white/30 tracking-[0.1em] uppercase font-medium mt-0.5">Workshop Management</span>
+          </Link>
           <button
             type="button"
             onClick={onClose}
