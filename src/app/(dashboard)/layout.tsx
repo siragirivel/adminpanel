@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { GlobalManualShortcut } from "@/components/GlobalManualShortcut";
+import { WhatsNewPopup } from "@/components/WhatsNewPopup";
 
 export default function DashboardLayout({
   children,
@@ -83,6 +84,7 @@ export default function DashboardLayout({
           </div>
         </main>
         <PriceSearch />
+        <WhatsNewPopup />
         <div className="fixed bottom-4 right-4 z-50 pointer-events-none select-none">
           <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm border border-black/[0.05] rounded-full px-3 py-1.5 shadow-sm">
             <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
