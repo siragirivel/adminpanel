@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Siragiri Vel WMS - User Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#fafaf8;
+  --card:#ffffff;
+  --dark:#111110;
+  --text:#1a1916;
+  --muted:#6b6960;
+  --hint:#a8a59c;
+  --border:#e8e5de;
+  --accent:#6366f1;
+  --accent-dim:rgba(99,102,241,0.08);
+  --green:#16a34a;
+  --green-dim:rgba(22,163,74,0.08);
+  --amber:#d97706;
+  --amber-dim:rgba(217,119,6,0.08);
+  --red:#dc2626;
+  --red-dim:rgba(220,38,38,0.08);
+  --font:'DM Sans',sans-serif;
+  --display:'Syne',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); display:flex; min-height:100vh; }
+a { color:inherit; }
+
+.sidebar {
+  width:248px;
+  min-height:100vh;
+  background:var(--dark);
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto;
+  z-index:100;
+}
+
+.sidebar-top {
+  padding:22px 18px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+
+.logo-name {
+  font-family:var(--display);
+  font-size:15px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:-0.02em;
+}
+
+.logo-name span { color:#a5b4fc; }
+
+.logo-version {
+  font-size:10px;
+  color:rgba(255,255,255,0.25);
+  margin-top:3px;
+  font-family:var(--mono);
+}
+
+.nav { flex:1; padding:14px 0 24px; }
+
+.nav-chapter {
+  font-size:9px;
+  font-weight:700;
+  color:rgba(255,255,255,0.2);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:14px 16px 5px;
+}
+
+.nav-item {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:9px 16px;
+  font-size:12px;
+  color:rgba(255,255,255,0.42);
+  cursor:pointer;
+  border-left:2px solid transparent;
+  transition:all 0.15s;
+  text-decoration:none;
+}
+
+.nav-item:hover { color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.04); }
+.nav-item.active { color:#a5b4fc; background:rgba(99,102,241,0.12); border-left-color:#6366f1; }
+.nav-item .n { font-size:10px; font-family:var(--mono); color:rgba(255,255,255,0.2); flex-shrink:0; }
+.nav-item.active .n { color:#6366f1; }
+
+.main {
+  margin-left:248px;
+  flex:1;
+  padding:48px 56px 80px;
+  max-width:960px;
+  animation:up 0.25s ease both;
+}
+
+.admin-link {
+  margin-top:14px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:8px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.72);
+  font-size:12px;
+  font-weight:600;
+  text-decoration:none;
+  transition:all 0.15s;
+}
+
+.admin-link:hover {
+  color:#fff;
+  background:rgba(255,255,255,0.1);
+}
+
+.manual-search-input {
+  width:100%;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  border-radius:12px;
+  padding:13px 14px;
+  font-size:13px;
+  outline:none;
+  transition:border-color 0.15s, background 0.15s;
+  min-width:0;
+}
+
+.manual-search-input::placeholder { color:var(--hint); }
+.manual-search-input:focus {
+  border-color:rgba(99,102,241,0.35);
+  background:#fff;
+}
+
+.manual-search-button {
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--muted);
+  border-radius:12px;
+  padding:12px 13px;
+  font-size:11px;
+  font-family:var(--mono);
+  cursor:pointer;
+  transition:all 0.15s;
+  flex-shrink:0;
+}
+
+.manual-search-button:hover:not(:disabled) {
+  color:var(--accent);
+  background:var(--accent-dim);
+  border-color:rgba(99,102,241,0.22);
+}
+
+.manual-search-button:disabled {
+  opacity:0.35;
+  cursor:not-allowed;
+}
+
+.manual-search-meta {
+  font-size:11px;
+  font-family:var(--mono);
+  color:var(--muted);
+  min-height:14px;
+}
+
+.manual-tools {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 18px;
+  margin:0 0 20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.manual-tools-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.manual-tools-title {
+  font-family:var(--display);
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:-0.02em;
+}
+
+.manual-tools-sub {
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.manual-search-row {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.cover {
+  background:var(--dark);
+  border-radius:16px;
+  padding:40px 44px;
+  margin-bottom:52px;
+  position:relative;
+  overflow:hidden;
+}
+
+.cover::before {
+  content:'';
+  position:absolute;
+  top:-60px;
+  right:-60px;
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(99,102,241,0.3), transparent 70%);
+}
+
+.cover-tag {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(99,102,241,0.15);
+  border:1px solid rgba(99,102,241,0.25);
+  border-radius:6px;
+  padding:4px 12px;
+  font-size:10px;
+  font-weight:700;
+  font-family:var(--mono);
+  color:#a5b4fc;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+
+.cover-dot {
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#a5b4fc;
+  animation:blink 1.8s infinite;
+}
+
+.cover-title {
+  font-family:var(--display);
+  font-size:34px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:-0.5px;
+  line-height:1.15;
+  margin-bottom:10px;
+}
+
+.cover-sub {
+  font-size:14px;
+  color:rgba(255,255,255,0.45);
+  line-height:1.6;
+  max-width:560px;
+}
+
+.cover-chips {
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+
+.cover-chip {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  padding:7px 14px;
+  font-size:12px;
+  font-weight:500;
+  color:rgba(255,255,255,0.6);
+}
+
+.cover-chip svg { width:14px; height:14px; }
+
+.chapter { margin-bottom:56px; scroll-margin-top:32px; }
+.search-current {
+  box-shadow:0 0 0 2px rgba(99,102,241,0.16);
+  border-radius:16px;
+}
+
+.manual-mark {
+  background:rgba(99,102,241,0.14);
+  color:#312e81;
+  padding:0 2px;
+  border-radius:4px;
+}
+
+.manual-mark-current {
+  background:#6366f1;
+  color:#fff;
+}
+
+.chapter-num {
+  font-size:10px;
+  font-weight:700;
+  font-family:var(--mono);
+  color:var(--accent);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.chapter-num::after {
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+.chapter-title {
+  font-family:var(--display);
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:-0.3px;
+  margin-bottom:6px;
+}
+
+.chapter-sub {
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+
+.steps {
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.step {
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 20px;
+  transition:box-shadow 0.15s;
+}
+
+.step:hover { box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+
+.step-num {
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:var(--dark);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:var(--mono);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  margin-top:1px;
+}
+
+.step-body { flex:1; }
+.step-title { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.step-desc { font-size:13px; color:var(--muted); line-height:1.6; }
+.step-desc strong { color:var(--text); font-weight:500; }
+
+.step-tip {
+  display:flex;
+  align-items:flex-start;
+  gap:7px;
+  margin-top:10px;
+  padding:9px 12px;
+  background:var(--accent-dim);
+  border-radius:7px;
+  font-size:12px;
+  color:var(--accent);
+  line-height:1.5;
+}
+
+.step-tip svg { width:13px; height:13px; flex-shrink:0; margin-top:1px; }
+
+.field-preview {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background:var(--card);
+  border-radius:10px;
+  border:1px solid var(--border);
+  padding:16px;
+  margin:12px 0;
+}
+
+.fp-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.fp-field { display:flex; flex-direction:column; gap:5px; }
+.fp-label {
+  font-size:10px;
+  font-weight:600;
+  color:var(--hint);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  font-family:var(--mono);
+}
+
+.fp-val {
+  font-size:14px;
+  font-weight:500;
+  color:var(--text);
+  border-bottom:1.5px solid var(--border);
+  padding:6px 0;
+}
+
+.fp-val.filled { color:var(--accent); border-bottom-color:var(--accent); }
+.fp-val.empty { color:var(--hint); }
+.fp-val.mono { font-family:var(--mono); }
+.fp-req { color:var(--red); font-size:11px; margin-left:3px; }
+
+.info-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:14px 0;
+}
+
+.info-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+}
+
+.info-card-icon {
+  width:32px;
+  height:32px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:10px;
+}
+
+.info-card-icon svg { width:16px; height:16px; }
+.info-card-title { font-size:13px; font-weight:600; margin-bottom:3px; }
+.info-card-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+
+.callout {
+  display:flex;
+  gap:11px;
+  padding:13px 16px;
+  border-radius:10px;
+  margin:14px 0;
+  border:1px solid;
+}
+
+.callout.note { background:#f0f9ff; border-color:#bae6fd; }
+.callout.warn { background:#fffbeb; border-color:#fde68a; }
+.callout.good { background:#f0fdf4; border-color:#bbf7d0; }
+.callout.imp { background:#fef2f2; border-color:#fecaca; }
+
+.callout-icon { font-size:13px; flex-shrink:0; font-family:var(--mono); font-weight:700; margin-top:1px; }
+.callout-body { font-size:13px; line-height:1.6; }
+.callout.note .callout-body { color:#0369a1; }
+.callout.warn .callout-body { color:#92400e; }
+.callout.good .callout-body { color:#15803d; }
+.callout.imp .callout-body { color:#991b1b; }
+.callout-body strong { font-weight:600; }
+
+.manual-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
+.manual-table thead th {
+  background:var(--dark);
+  color:#fff;
+  font-size:10px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  padding:9px 14px;
+  text-align:left;
+}
+
+.manual-table tbody td {
+  padding:10px 14px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  vertical-align:top;
+  background:var(--card);
+  line-height:1.5;
+}
+
+.manual-table tbody tr:hover td { background:#fafaf8; }
+
+.divider { height:1px; background:var(--border); margin:40px 0; }
+
+.badge {
+  display:inline-flex;
+  font-size:10px;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:20px;
+  font-family:var(--mono);
+}
+
+.badge-req { background:var(--red-dim); color:var(--red); }
+.badge-opt { background:var(--amber-dim); color:var(--amber); }
+.badge-auto { background:var(--green-dim); color:var(--green); }
+
+.tag {
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  background:var(--accent-dim);
+  color:var(--accent);
+  border-radius:5px;
+  padding:1px 7px;
+  font-size:12px;
+  font-weight:500;
+}
+
+@keyframes up { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.25; } }
+
+.sidebar::-webkit-scrollbar { width:3px; }
+.sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:2px; }
+
+@media (max-width: 980px) {
+  body { display:block; }
+  .sidebar {
+    position:sticky;
+    width:100%;
+    min-height:auto;
+    max-height:none;
+  }
+  .main {
+    margin-left:0;
+    padding:28px 18px 56px;
+    max-width:none;
+  }
+  .cover { padding:28px 22px; }
+  .cover-title { font-size:28px; }
+  .fp-row,
+  .info-grid { grid-template-columns:1fr; }
+  .manual-tools-top,
+  .manual-search-row { flex-direction:column; align-items:stretch; }
+}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="logo-name">Siragiri Vel <span>WMS</span></div>
+    <div class="logo-version">User Manual · Ctrl/Cmd + U</div>
+    <a class="admin-link" href="/dashboard">← Back to Admin Panel</a>
+  </div>
+  <nav class="nav">
+    <div class="nav-chapter">Getting Started</div>
+    <a class="nav-item active" href="#intro"><span class="n">00</span> Welcome</a>
+    <a class="nav-item" href="#sample-data"><span class="n">00A</span> Sample Data</a>
+    <a class="nav-item" href="#dashboard"><span class="n">00B</span> Dashboard and Search</a>
+
+    <div class="nav-chapter">Vehicles</div>
+    <a class="nav-item" href="#register"><span class="n">01</span> Register a Vehicle</a>
+    <a class="nav-item" href="#search-vehicle"><span class="n">02</span> Search a Vehicle</a>
+    <a class="nav-item" href="#vehicle-history"><span class="n">03</span> Vehicle Profile</a>
+
+    <div class="nav-chapter">Inventory</div>
+    <a class="nav-item" href="#add-part"><span class="n">04</span> Add a Spare Part</a>
+    <a class="nav-item" href="#spare-order"><span class="n">05</span> Record a Purchase</a>
+    <a class="nav-item" href="#price-search"><span class="n">06</span> Search Part Price</a>
+
+    <div class="nav-chapter">Billing</div>
+    <a class="nav-item" href="#invoice"><span class="n">07</span> Create an Invoice</a>
+    <a class="nav-item" href="#quotation"><span class="n">08</span> Create a Quotation</a>
+
+    <div class="nav-chapter">Accounts</div>
+    <a class="nav-item" href="#daybook"><span class="n">09</span> Day Book Entry</a>
+    <a class="nav-item" href="#accounts"><span class="n">10</span> View Accounts</a>
+
+    <div class="nav-chapter">Review</div>
+    <a class="nav-item" href="#logs"><span class="n">11</span> Logs and Checks</a>
+
+    <div class="nav-chapter">Admin</div>
+    <a class="nav-item" href="#profile-settings"><span class="n">12</span> Profile Settings</a>
+    <a class="nav-item" href="#tips"><span class="n">13</span> Tips and Shortcuts</a>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="cover" id="intro">
+    <div class="cover-tag"><div class="cover-dot"></div> User Manual</div>
+    <div class="cover-title">Siragiri Vel Automobiles<br/>Workshop Management System</div>
+    <div class="cover-sub">
+      This guide shows you how to use the system step by step. It is written for workshop staff, service advisors, billing operators, and owners who want a clean daily process.
+    </div>
+    <div class="cover-chips">
+      <div class="cover-chip">
+        <svg fill="none" viewBox="0 0 16 16" style="color:#a5b4fc;"><path d="M3 12H1V8.5L3 5h10l2 3.5V12h-2M3 12a2 2 0 104 0m4 0a2 2 0 104 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Vehicle Management
+      </div>
+      <div class="cover-chip">
+        <svg fill="none" viewBox="0 0 16 16" style="color:#a5b4fc;"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Invoice and Quotation
+      </div>
+      <div class="cover-chip">
+        <svg fill="none" viewBox="0 0 16 16" style="color:#a5b4fc;"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Inventory
+      </div>
+      <div class="cover-chip">
+        <svg fill="none" viewBox="0 0 16 16" style="color:#a5b4fc;"><path d="M2 12V6l6-5 6 5v6" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><rect x="5.5" y="8" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+        Day Book and Accounts
+      </div>
+    </div>
+  </div>
+
+  <div class="manual-tools">
+    <div class="manual-tools-top">
+      <div>
+        <div class="manual-tools-title">Search This Manual</div>
+        <div class="manual-tools-sub">Search by chapter, field name, shortcut, or workflow. Matching words are highlighted directly inside the manual.</div>
+      </div>
+      <div id="manual-search-meta" class="manual-search-meta">Search the manual content</div>
+    </div>
+    <div class="manual-search-row">
+      <input id="manual-search-input" class="manual-search-input" type="text" placeholder="Search chapter, field, or action"/>
+      <button id="manual-search-prev" class="manual-search-button" type="button" disabled>Prev</button>
+      <button id="manual-search-next" class="manual-search-button" type="button" disabled>Next</button>
+      <button id="manual-search-clear" class="manual-search-button" type="button" disabled>Clear</button>
+    </div>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-icon">INFO</div>
+    <div class="callout-body"><strong>How to use this guide:</strong> Read chapters 1 to 8 once in order. After that, use the left menu to jump directly to the task you need. The examples below use the same sample customer all the way through.</div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-title">Main app font</div>
+      <div class="info-card-desc">Most screens in Sirigirvel use <strong>DM Sans</strong> for the main interface.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Heading style</div>
+      <div class="info-card-desc">This manual uses <strong>Syne</strong> for chapter titles. Some app screens also use premium display headings for emphasis.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">ID and shortcut labels</div>
+      <div class="info-card-desc">Invoice numbers, car IDs, dates, and shortcut hints are shown with a mono style such as <strong>DM Mono</strong>.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Manual audit status</div>
+      <div class="info-card-desc">This version has been updated against the current dashboard, vehicle, inventory, billing, accounts, logs, Day Book, and profile settings screens in the app.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="dashboard">
+    <div class="chapter-num">Chapter 00</div>
+    <div class="chapter-title">Dashboard, Search, and Notifications</div>
+    <div class="chapter-sub">The dashboard is the main control panel. It shows balance summaries, low-stock highlights, and quick actions for common tasks.</div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-title">Quick actions</div>
+        <div class="info-card-desc">The dashboard can open New Vehicle, New Invoice, New Quotation, Price Search, Day Book, Day Book History, and Accounts directly.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Top search bar</div>
+        <div class="info-card-desc">The navbar search looks up vehicles by registration number, owner name, or car ID and jumps straight to the vehicle profile.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Notification bell</div>
+        <div class="info-card-desc">The bell opens low-stock alerts only. It warns when a spare part stock is less than or equal to its threshold.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Manual button</div>
+        <div class="info-card-desc">Use the navbar Manual button or press <strong>Ctrl + U</strong> / <strong>Cmd + U</strong> to open this guide.</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Use dashboard quick actions for daily work</div>
+          <div class="step-desc">The dashboard does not just show numbers. It also launches the main workflows used by the workshop staff.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Use the top search to reopen old vehicles</div>
+          <div class="step-desc">Search by owner name, registration number, or car ID. Click the result to open the matching vehicle profile.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Open the bell icon for low-stock alerts</div>
+          <div class="step-desc">This drawer shows parts that need attention. Use it as a reorder reminder, not as a general notification inbox.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Check the stock and money blocks before closing the day</div>
+          <div class="step-desc">The dashboard shows spare parts stock, low-stock alerts, petty cash, bank balance, and today's totals in one place.</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Dashboard section</th><th>What you see there</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Main overview header</td><td>Current page heading and a quick New Vehicle button</td></tr>
+        <tr><td>Petty Cash card</td><td>Net cash in hand and today's cash change</td></tr>
+        <tr><td>Bank Account card</td><td>Net UPI, card, and cheque balance with today's bank change</td></tr>
+        <tr><td>Quick actions</td><td>New Vehicle, New Invoice, New Quotation, Price Search, Day Book, Day History, and Accounts</td></tr>
+        <tr><td>Spare parts stock</td><td>Five lowest-stock parts with current units and selling rate</td></tr>
+        <tr><td>Account summary</td><td>Petty Cash, Bank Account, total in, total out, and today's net</td></tr>
+        <tr><td>Low stock alerts</td><td>Only parts at or below threshold, with shortcut to Inventory</td></tr>
+        <tr><td>Navbar search</td><td>Vehicle lookup by registration, owner, or car ID</td></tr>
+        <tr><td>Notification drawer</td><td>Detailed low-stock panel with Manage Stock shortcut</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="sample-data">
+    <div class="chapter-num">Reference</div>
+    <div class="chapter-title">Sample Data for Practice</div>
+    <div class="chapter-sub">Use this sample data if you want to practice every workflow from registration to invoice download.</div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Field</th><th>Sample Value</th><th>Used In</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Customer name</td><td><strong>Rajan Kumar</strong></td><td>Vehicle, quotation, invoice</td></tr>
+        <tr><td>Phone number</td><td><strong>+91 98765 43210</strong></td><td>Vehicle record</td></tr>
+        <tr><td>Address</td><td>14, Perundurai Main Road, Erode - 638052</td><td>Vehicle record</td></tr>
+        <tr><td>Vehicle registration</td><td><strong>TN37AB1234</strong></td><td>Vehicle record</td></tr>
+        <tr><td>Make / Model</td><td>Hyundai / i20</td><td>Vehicle record</td></tr>
+        <tr><td>System car ID</td><td><span class="tag">SGV-2026-001</span></td><td>Vehicle search and billing</td></tr>
+        <tr><td>Quotation number</td><td><span class="tag">QTN/MAR/2026/001</span></td><td>Quotation module</td></tr>
+        <tr><td>Invoice number</td><td><span class="tag">SRV/MAR/2026/001</span></td><td>Invoice module</td></tr>
+        <tr><td>Spare part 1</td><td>Front Brake Pad Set</td><td>Inventory and invoice</td></tr>
+        <tr><td>Spare part 2</td><td>Engine Oil 5W30</td><td>Inventory and invoice</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="register">
+    <div class="chapter-num">Chapter 01</div>
+    <div class="chapter-title">Register a New Vehicle</div>
+    <div class="chapter-sub">Register a vehicle before making its first quotation or invoice. The app creates a Car ID automatically and uses it as the permanent link for that vehicle.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Car ID and choose Add New</div>
+          <div class="step-desc">From the left sidebar, click <strong>Car ID</strong>. Then open the new registration form.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Fill the owner details</div>
+          <div class="step-desc">Enter the customer name, phone number, and address.</div>
+          <div class="field-preview">
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Full name <span class="fp-req">required</span></div>
+                <div class="fp-val filled">Rajan Kumar</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Phone number <span class="fp-req">required</span></div>
+                <div class="fp-val filled">+91 98765 43210</div>
+              </div>
+            </div>
+            <div class="fp-field">
+              <div class="fp-label">Address <span class="badge badge-opt">optional</span></div>
+              <div class="fp-val filled">14, Perundurai Main Road, Erode - 638052</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Fill the vehicle details</div>
+          <div class="step-desc">Use the registration number exactly as it appears on the RC book.</div>
+          <div class="field-preview">
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Registration number <span class="fp-req">required</span></div>
+                <div class="fp-val filled mono">TN37AB1234</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Chassis number</div>
+                <div class="fp-val filled mono">MA1XXA12345678901</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Make <span class="fp-req">required</span></div>
+                <div class="fp-val filled">Hyundai</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Model <span class="fp-req">required</span></div>
+                <div class="fp-val filled">i20</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Year</div>
+                <div class="fp-val filled">2022</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Color</div>
+                <div class="fp-val filled">White</div>
+              </div>
+            </div>
+          </div>
+          <div class="step-tip">
+            <svg fill="none" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Registration numbers are cleaned and stored in uppercase automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Add intake notes and photos</div>
+          <div class="step-desc">Enter the entry note and upload front, back, or chassis photos if you have them.</div>
+          <table class="manual-table">
+            <thead>
+              <tr><th>Input available</th><th>Type</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Front view photo</td><td>Image upload</td><td>Optional</td></tr>
+              <tr><td>Rear view photo</td><td>Image upload</td><td>Optional</td></tr>
+              <tr><td>Chassis number photo</td><td>Image upload</td><td>Optional</td></tr>
+              <tr><td>Entry note</td><td>Text</td><td>Optional</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Save the vehicle</div>
+          <div class="step-desc">The app generates a car ID such as <span class="tag">SGV-2026-001</span>. Use this ID in future searches and billing work.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout good">
+      <div class="callout-icon">OK</div>
+      <div class="callout-body"><strong>Result:</strong> the vehicle is now ready for quotations, invoices, notes, photos, and future service history.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="search-vehicle">
+    <div class="chapter-num">Chapter 02</div>
+    <div class="chapter-title">Search for a Vehicle</div>
+    <div class="chapter-sub">Use the top search bar or the Car ID page whenever a returning customer arrives.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Use the top search bar</div>
+          <div class="step-desc">Type the registration number, owner name, or car ID. Matching vehicles appear immediately.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Use examples like these</div>
+          <div class="step-desc"><strong>TN37AB1234</strong>, <strong>Rajan</strong>, or <strong>SGV-2026-001</strong>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Open the vehicle row</div>
+          <div class="step-desc">Click the result to open the vehicle profile page.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="vehicle-history">
+    <div class="chapter-num">Chapter 03</div>
+    <div class="chapter-title">Use the Vehicle Profile Page</div>
+    <div class="chapter-sub">The vehicle profile is the main operating page for repeat customers.</div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--accent-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--accent);"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div class="info-card-title">Invoice history</div>
+        <div class="info-card-desc">Open old invoices or download the PDF again from the same screen.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--green-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--green);"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 14c1-2.5 3.2-4 5.5-4s4.5 1.5 5.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div class="info-card-title">Owner contact</div>
+        <div class="info-card-desc">See the owner name and phone number before billing or follow-up.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--amber-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--amber);"><path d="M3 2.5h10v11H3z" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div class="info-card-title">Notes and timeline</div>
+        <div class="info-card-desc">Add service notes and review recent work in chronological order.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--red-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--red);"><rect x="1" y="3" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 6l2 2 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="info-card-title">Quick actions</div>
+        <div class="info-card-desc">Create a new invoice or quotation directly from the vehicle page.</div>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-icon">TIP</div>
+      <div class="callout-body">If the vehicle is already open in front of you, create the invoice from this page. The car is pre-linked automatically.</div>
+    </div>
+
+    <div class="callout good">
+      <div class="callout-icon">NOTE</div>
+      <div class="callout-body">You can also download older invoices directly from the vehicle page. This is useful when a customer asks for a previous bill copy.</div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Review the top summary first</div>
+          <div class="step-desc">The profile header shows the owner name, registration number, car ID, make/model, total invoices, total spent, last service date, and entry date.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Use the photos and vehicle information cards</div>
+          <div class="step-desc">Open front, rear, or chassis images. The vehicle information card shows car ID, registration number, make, model, year, colour, chassis number, and the stored vehicle type value if present.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Open invoice history from the same page</div>
+          <div class="step-desc">Each invoice row shows invoice number, date, service summary, payment mode, amount, and a separate download button.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Use owner actions and notes</div>
+          <div class="step-desc">Call or WhatsApp the customer, add a note, and review the service timeline before creating the next bill.</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Vehicle profile section</th><th>What it does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Header actions</td><td>Create Invoice, Edit, and Quote for the current vehicle</td></tr>
+        <tr><td>Summary strip</td><td>Total invoices, total spent, last service date, and entry date</td></tr>
+        <tr><td>Vehicle Photos</td><td>Front, rear, and chassis image preview with full-screen download view</td></tr>
+        <tr><td>Vehicle Information</td><td>Car ID, registration, make, model, year, colour, vehicle type, and chassis number</td></tr>
+        <tr><td>Invoice History</td><td>Open any invoice row or download the PDF directly</td></tr>
+        <tr><td>Owner card</td><td>See customer name, phone number, and direct Call/Message buttons</td></tr>
+        <tr><td>Quick Actions</td><td>Create Invoice, Create Quotation, and Edit Vehicle</td></tr>
+        <tr><td>Service Timeline</td><td>Recent invoices, entry note, and registration event in date order</td></tr>
+        <tr><td>Notes</td><td>View stored notes and add a new note with the plus button</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="add-part">
+    <div class="chapter-num">Chapter 04</div>
+    <div class="chapter-title">Add a New Spare Part</div>
+    <div class="chapter-sub">Create inventory records before using parts in invoices.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Spare Parts and choose Add New Part</div>
+          <div class="step-desc">Go to <strong>Spare Parts</strong> from the sidebar and open the add form.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Enter the stock and price details</div>
+          <div class="field-preview">
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Part name <span class="fp-req">required</span></div>
+                <div class="fp-val filled">Front Brake Pad Set</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Category <span class="fp-req">required</span></div>
+                <div class="fp-val filled">Brakes</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Seller <span class="fp-req">required</span></div>
+                <div class="fp-val filled">TVS Genuine Parts</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Low stock alert</div>
+                <div class="fp-val empty">Set your shop minimum</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Cost price <span class="fp-req">required</span></div>
+                <div class="fp-val filled">1800</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Selling price <span class="fp-req">required</span></div>
+                <div class="fp-val filled">2200</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Opening stock <span class="fp-req">required</span></div>
+                <div class="fp-val filled">12</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Part ID</div>
+                <div class="fp-val mono empty">auto-generated</div>
+              </div>
+            </div>
+          </div>
+          <div class="step-tip">
+            <svg fill="none" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Set a practical threshold. When stock reaches the threshold or lower, the notification bell shows a low-stock alert.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Save the part</div>
+          <div class="step-desc">After saving, the part appears in inventory search, price search, and invoice part selection.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-icon">LIST</div>
+      <div class="callout-body">The inventory list supports search by part name, ID, or seller, plus filters for category and stock state such as low stock, in stock, and out of stock.</div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Inventory list action</th><th>What it does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Open row</td><td>Opens the selected part in edit mode</td></tr>
+        <tr><td>View</td><td>Opens the same part record for review</td></tr>
+        <tr><td>Edit</td><td>Loads the selected part into the part form</td></tr>
+        <tr><td>Delete</td><td>Deletes the part after confirmation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="spare-order">
+    <div class="chapter-num">Chapter 05</div>
+    <div class="chapter-title">Record a Spare Purchase</div>
+    <div class="chapter-sub">Use Spare Orders to store supplier purchases and bill images.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Spare Orders and click New Order</div>
+          <div class="step-desc">This module is for supplier purchase records.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Fill the purchase details</div>
+          <div class="field-preview">
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Supplier <span class="fp-req">required</span></div>
+                <div class="fp-val filled">TVS Genuine Parts</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Part <span class="fp-req">required</span></div>
+                <div class="fp-val filled">Front Brake Pad Set</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Quantity <span class="fp-req">required</span></div>
+                <div class="fp-val filled">10</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Total amount <span class="fp-req">required</span></div>
+                <div class="fp-val filled">18000</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Payment mode <span class="fp-req">required</span></div>
+                <div class="fp-val filled">UPI</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Date <span class="fp-req">required</span></div>
+                <div class="fp-val filled mono">2026-03-19</div>
+              </div>
+            </div>
+            <div class="fp-row">
+              <div class="fp-field">
+                <div class="fp-label">Order status <span class="fp-req">required</span></div>
+                <div class="fp-val filled">Pending</div>
+              </div>
+              <div class="fp-field">
+                <div class="fp-label">Bill included?</div>
+                <div class="fp-val filled">Yes / No checkbox</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Upload the supplier bill if available</div>
+          <div class="step-desc">You can attach a clear photo of the purchase bill for later verification.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Save the order</div>
+          <div class="step-desc">The order is stored in the purchase list with supplier, amount, date, and bill proof.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">NOTE</div>
+      <div class="callout-body"><strong>Important:</strong> Spare Orders do <strong>not</strong> update stock or balances automatically in this app. If the purchase should affect accounts, add the matching expense in <strong>Day Book</strong>.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="price-search">
+    <div class="chapter-num">Chapter 06</div>
+    <div class="chapter-title">Search Part Price Quickly</div>
+    <div class="chapter-sub">Use Price Search when the counter staff needs a quick selling rate without leaving the current work.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Press Ctrl + K or Cmd + K</div>
+          <div class="step-desc">This opens the price search popup from anywhere in the dashboard.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Type the part name, ID, or category</div>
+          <div class="step-desc">The results show selling price, stock, and category instantly.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Copy the selling rate if needed</div>
+          <div class="step-desc">Use the copy button to copy the displayed price directly.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-icon">INFO</div>
+      <div class="callout-body">The current Price Search supports open, search, and copy. It does not provide keyboard selection with arrow keys in the current build.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="invoice">
+    <div class="chapter-num">Chapter 07</div>
+    <div class="chapter-title">Create an Invoice</div>
+    <div class="chapter-sub">Create the final bill after service is confirmed or after a quotation is approved.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Invoices and click Create New Invoice</div>
+          <div class="step-desc">You can also create an invoice from the vehicle profile page.</div>
+          <table class="manual-table">
+            <thead>
+              <tr><th>Invoice form input</th><th>Type</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Vehicle search</td><td>Search box</td><td>Search by Car ID, owner, phone, or registration</td></tr>
+              <tr><td>Invoice date</td><td>Date</td><td>Editable before save</td></tr>
+              <tr><td>Part search</td><td>Search box</td><td>Search by part name, ID, or category</td></tr>
+              <tr><td>Part quantity</td><td>Number</td><td>Limited by stock available</td></tr>
+              <tr><td>Part unit price</td><td>Number</td><td>Editable</td></tr>
+              <tr><td>Labour description</td><td>Text</td><td>Multiple rows allowed</td></tr>
+              <tr><td>Labour amount</td><td>Number</td><td>Multiple rows allowed</td></tr>
+              <tr><td>Payment mode</td><td>Choice</td><td>Cash, UPI, Card, Cheque</td></tr>
+              <tr><td>Internal note</td><td>Text</td><td>Optional</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Select the vehicle</div>
+          <div class="step-desc">Search by car ID, customer name, or registration number. The vehicle card fills automatically after selection.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Add spare parts used</div>
+          <div class="step-desc">Search parts from inventory and set quantity and unit rate if needed.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Add labour charges</div>
+          <div class="step-desc">Add each service line separately, such as brake pad replacement or general service labour.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Choose the correct payment mode</div>
+          <div class="step-desc">Use <strong>Cash</strong>, <strong>UPI</strong>, <strong>Card</strong>, or <strong>Cheque</strong>. This affects where the amount lands in accounts.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Save the invoice</div>
+          <div class="step-desc">The invoice PDF downloads automatically with a number like <span class="tag">SRV/MAR/2026/001</span>.</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Invoice list action</th><th>What it does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>View</td><td>Opens the invoice viewer screen</td></tr>
+        <tr><td>Download</td><td>Generates and downloads the PDF again</td></tr>
+        <tr><td>Edit</td><td>Reopens the invoice route using its invoice number</td></tr>
+        <tr><td>Delete</td><td>Deletes the invoice after confirmation</td></tr>
+      </tbody>
+    </table>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Invoice viewer section</th><th>What you can review there</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Header</td><td>Invoice number, date, and created-by user</td></tr>
+        <tr><td>Customer info</td><td>Owner name, phone number, and vehicle registration</td></tr>
+        <tr><td>Vehicle info</td><td>Model, car number, and payment mode</td></tr>
+        <tr><td>Services performed</td><td>All labour rows and labour subtotal</td></tr>
+        <tr><td>Parts supplied</td><td>Part name, part ID, quantity, unit price, and amount</td></tr>
+        <tr><td>Final summary</td><td>Total services, total parts, subtotal, tax, and grand total</td></tr>
+        <tr><td>Download PDF</td><td>Regenerates the printable invoice file</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout good">
+      <div class="callout-icon">AUTO</div>
+      <div class="callout-body"><strong>What happens automatically on invoice save:</strong> the invoice is stored, a PDF is generated, selected spare part stock is reduced, a Day Book entry is created, and cash or bank balance is updated based on the payment mode.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="quotation">
+    <div class="chapter-num">Chapter 08</div>
+    <div class="chapter-title">Create a Quotation</div>
+    <div class="chapter-sub">Use quotations when the customer wants an estimate before approval.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Quotation and click New Quotation</div>
+          <div class="step-desc">The quotation module is separate from the invoice list.</div>
+          <table class="manual-table">
+            <thead>
+              <tr><th>Quotation form input</th><th>Type</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Vehicle search</td><td>Search box</td><td>Search by Car ID or owner</td></tr>
+              <tr><td>Start date</td><td>Date</td><td>Required</td></tr>
+              <tr><td>End date</td><td>Date</td><td>Must be on or after start date</td></tr>
+              <tr><td>Part search</td><td>Search box</td><td>Inventory part lookup</td></tr>
+              <tr><td>Labour description</td><td>Text</td><td>Multiple rows allowed</td></tr>
+              <tr><td>Labour amount</td><td>Number</td><td>Multiple rows allowed</td></tr>
+              <tr><td>Discount</td><td>Number</td><td>Flat amount only</td></tr>
+              <tr><td>Quotation note</td><td>Text</td><td>Optional</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Select the vehicle and enter the work estimate</div>
+          <div class="step-desc">Add parts, labour, and any note needed for customer approval.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Set validity dates and discount if required</div>
+          <div class="step-desc">The app stores start date, end date, and a flat discount amount if you choose one.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Save and share the PDF</div>
+          <div class="step-desc">After customer approval, use the convert action from the quotation list to open an invoice prefilled with the same data.</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Quotation list action</th><th>What it does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>View</td><td>Opens quotation viewer</td></tr>
+        <tr><td>Convert</td><td>Opens invoice creation with quotation data prefilled</td></tr>
+        <tr><td>Download</td><td>Downloads the quotation PDF again</td></tr>
+        <tr><td>Delete</td><td>Deletes the quotation after confirmation</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout note">
+      <div class="callout-icon">TIP</div>
+      <div class="callout-body">Quotation save does <strong>not</strong> reduce stock and does <strong>not</strong> update accounts. Those changes happen only when the invoice is saved.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="daybook">
+    <div class="chapter-num">Chapter 09</div>
+    <div class="chapter-title">Create a Day Book Entry</div>
+    <div class="chapter-sub">Use Day Book for manual money movements that are not already created by invoice save.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Day Book</div>
+          <div class="step-desc">Choose <strong>Debit</strong> for expense and <strong>Credit</strong> for income.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Enter description and amount</div>
+          <div class="step-desc">Examples: Workshop cleaning, tea expense, or supplier settlement.</div>
+          <table class="manual-table">
+            <thead>
+              <tr><th>Day Book input</th><th>Type</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Entry type</td><td>Toggle</td><td>Debit or Credit</td></tr>
+              <tr><td>Date</td><td>Date</td><td>Editable</td></tr>
+              <tr><td>Description</td><td>Text</td><td>Autocomplete uses previous entries</td></tr>
+              <tr><td>Amount</td><td>Number</td><td>Required</td></tr>
+              <tr><td>Mode of payment</td><td>Choice</td><td>Cash, UPI, Card, Cheque</td></tr>
+              <tr><td>Note</td><td>Text</td><td>Optional</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Select payment mode and date</div>
+          <div class="step-desc">The chosen mode controls whether the change affects petty cash or bank balance.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Use suggestions when available</div>
+          <div class="step-desc">If you start typing a repeated description, the app suggests earlier entries to save time.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Save the entry</div>
+          <div class="step-desc">The entry becomes visible in Day Book History and Accounts immediately.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">WARN</div>
+      <div class="callout-body">Do not add a duplicate Day Book entry for a customer invoice. Invoice save already creates that record automatically.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="accounts">
+    <div class="chapter-num">Chapter 10</div>
+    <div class="chapter-title">Use the Accounts Page</div>
+    <div class="chapter-sub">Accounts gives the current money picture of the workshop from all recorded transactions.</div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--amber-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--amber);"><rect x="1" y="5" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="9.5" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg>
+        </div>
+        <div class="info-card-title">Petty Cash</div>
+        <div class="info-card-desc">Shows net cash in hand from cash credits and debits.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--green-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--green);"><rect x="1" y="4" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1 8h14" stroke="currentColor" stroke-width="1.3"/></svg>
+        </div>
+        <div class="info-card-title">Bank balance</div>
+        <div class="info-card-desc">Shows net UPI, card, and cheque movement together.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--accent-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--accent);"><path d="M3 12l3-3 2 2 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="info-card-title">Daily totals</div>
+        <div class="info-card-desc">Check today's income, today's expense, and the net result.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:var(--red-dim);">
+          <svg fill="none" viewBox="0 0 16 16" style="color:var(--red);"><path d="M3 13V5m5 8V3m5 10V7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div class="info-card-title">Recent activity</div>
+        <div class="info-card-desc">Review recent transactions without opening the full history page.</div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">NOTE</div>
+      <div class="callout-body">Cash and bank are tracked separately. Always choose the correct payment mode on invoices and Day Book entries.</div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Accounts section</th><th>What it shows</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Petty Cash</td><td>Cash-only balance with today's cash in and cash out</td></tr>
+        <tr><td>Bank Account</td><td>UPI, card, and cheque balance with today's bank in and out</td></tr>
+        <tr><td>Today's overview</td><td>Total income today, total expense today, and net today</td></tr>
+        <tr><td>Year summary</td><td>Income, expense, and net across the current year</td></tr>
+        <tr><td>Monthly chart</td><td>Month-by-month income and expense comparison</td></tr>
+        <tr><td>Recent transactions</td><td>Latest entries with filter for all, debit, or credit</td></tr>
+        <tr><td>View Day Book</td><td>Opens full Day Book History</td></tr>
+        <tr><td>New Entry</td><td>Opens the Day Book entry form</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="logs">
+    <div class="chapter-num">Chapter 11</div>
+    <div class="chapter-title">Review Logs and History</div>
+    <div class="chapter-sub">Use these pages when you need to review records, audit changes, or correct old entries.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Logs from the sidebar</div>
+          <div class="step-desc">You can filter activity by vehicles, spare parts, spare orders, transactions, invoices, and quotations.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Search by record name or action</div>
+          <div class="step-desc">Use the search box to find a specific invoice, car ID, or edited record quickly.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Use Day Book History for finance review</div>
+          <div class="step-desc">That page lets you edit or delete entries and filter by type, date range, or payment mode.</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Review screen</th><th>What you can do</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Activity Logs</td><td>Search changes, filter by module, and see create, edit, and delete actions with user and time</td></tr>
+        <tr><td>Day Book History</td><td>Search by description or note, filter by date range, filter by type, and filter by payment mode</td></tr>
+        <tr><td>Day Book History actions</td><td>Edit an entry or delete an entry after confirmation</td></tr>
+        <tr><td>History totals</td><td>Visible debit total, visible credit total, net balance, and petty cash for filtered entries</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout note">
+      <div class="callout-icon">INFO</div>
+      <div class="callout-body">The Profile page is for account settings only. It lets you change display name, email, and password, but it is separate from customer or workshop records.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="profile-settings">
+    <div class="chapter-num">Chapter 12</div>
+    <div class="chapter-title">Use Profile Settings</div>
+    <div class="chapter-sub">Profile Settings controls the logged-in admin account only. It does not change customer records, vehicles, or workshop transactions.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open the profile page from the top-right avatar</div>
+          <div class="step-desc">Click the round user badge in the navbar to open <strong>Account settings</strong>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Edit the display name and email if needed</div>
+          <div class="step-desc">The form lets you change the workshop display name shown in the interface and the command email address for the current account.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Change password only when required</div>
+          <div class="step-desc">Enter a new password and confirm it. If both fields are blank, the current password stays unchanged.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Save the changes</div>
+          <div class="step-desc">Use the <strong>Save changes</strong> button. The page also shows the join date and a short Root Access ID reference for the logged-in user.</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Profile settings field</th><th>Type</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Workshop Display Name</td><td>Text</td><td>Updates the current account username metadata</td></tr>
+        <tr><td>Command Email Address</td><td>Email</td><td>Updates the current login email</td></tr>
+        <tr><td>New Password</td><td>Password</td><td>Optional, leave blank to keep current password</td></tr>
+        <tr><td>Confirm New Password</td><td>Password</td><td>Must match the new password</td></tr>
+        <tr><td>Joined date</td><td>Read only</td><td>Shown below the form</td></tr>
+        <tr><td>Root Access ID</td><td>Read only</td><td>Short user ID reference shown at the bottom</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout note">
+      <div class="callout-icon">INFO</div>
+      <div class="callout-body">There is no profile photo upload in the current settings page. The avatar circle uses the first letter of the saved username automatically.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chapter" id="tips">
+    <div class="chapter-num">Chapter 13</div>
+    <div class="chapter-title">Tips and Shortcuts</div>
+    <div class="chapter-sub">These small habits keep records clean and save time every day.</div>
+
+    <table class="manual-table">
+      <thead>
+        <tr><th>Shortcut or habit</th><th>How to use it</th><th>Why it matters</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Ctrl + U / Cmd + U</strong></td><td>Opens this user manual</td><td>Fast help from any dashboard page</td></tr>
+        <tr><td><strong>Ctrl + K / Cmd + K</strong></td><td>Opens Price Search</td><td>Quick price checks while talking to a customer</td></tr>
+        <tr><td><strong>Search before adding</strong></td><td>Search a vehicle or part first</td><td>Avoid duplicate records</td></tr>
+        <tr><td><strong>Create vehicle first</strong></td><td>Register the vehicle before first billing</td><td>Keeps invoices linked to the correct car ID</td></tr>
+        <tr><td><strong>Use the Manual button</strong></td><td>Open it from the top navbar</td><td>No need to remember the route manually</td></tr>
+        <tr><td><strong>Check payment mode</strong></td><td>Confirm Cash, UPI, Card, or Cheque before saving</td><td>Accounts depend on this choice</td></tr>
+        <tr><td><strong>Use quotation before approval</strong></td><td>Create the estimate first, convert later</td><td>Avoid retyping the same parts and labour twice</td></tr>
+        <tr><td><strong>Watch low stock alerts</strong></td><td>Check the notification bell regularly</td><td>Prevents missed purchases</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout imp">
+      <div class="callout-icon">CHECK</div>
+      <div class="callout-body"><strong>Final daily checklist:</strong> search vehicle first, create quotation if approval is pending, save invoice only after checking payment mode, use Day Book only for manual money movements, and review Accounts before closing the day.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const chapters = document.querySelectorAll('.chapter, .cover');
+  const navItems = document.querySelectorAll('.nav-item');
+  const searchInput = document.getElementById('manual-search-input');
+  const searchMeta = document.getElementById('manual-search-meta');
+  const prevButton = document.getElementById('manual-search-prev');
+  const nextButton = document.getElementById('manual-search-next');
+  const clearButton = document.getElementById('manual-search-clear');
+  const searchableSections = Array.from(document.querySelectorAll('.cover, .chapter'));
+  searchableSections.forEach((section) => {
+    section.dataset.originalHtml = section.innerHTML;
+  });
+  let searchMatches = [];
+  let currentSearchIndex = -1;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        navItems.forEach((item) => item.classList.remove('active'));
+        const active = document.querySelector('.nav-item[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+
+  chapters.forEach((chapter) => observer.observe(chapter));
+
+  navItems.forEach((item) => {
+    item.addEventListener('click', (event) => {
+      event.preventDefault();
+      const target = document.querySelector(item.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  const clearSearchHighlights = () => {
+    searchableSections.forEach((section) => {
+      section.classList.remove('search-current');
+      if (section.dataset.originalHtml) {
+        section.innerHTML = section.dataset.originalHtml;
+      }
+    });
+  };
+
+  const updateSearchControls = () => {
+    const hasMatches = searchMatches.length > 0;
+    prevButton.disabled = !hasMatches;
+    nextButton.disabled = !hasMatches;
+    clearButton.disabled = !searchInput.value.trim();
+
+    if (!searchInput.value.trim()) {
+      searchMeta.textContent = 'Search the manual content';
+      return;
+    }
+
+    if (!hasMatches) {
+      searchMeta.textContent = 'No matching word found';
+      return;
+    }
+
+    searchMeta.textContent = 'Result ' + (currentSearchIndex + 1) + ' of ' + searchMatches.length;
+  };
+
+  const focusSearchMatch = (index) => {
+    if (!searchMatches.length) return;
+    currentSearchIndex = (index + searchMatches.length) % searchMatches.length;
+    document.querySelectorAll('.manual-mark-current').forEach((mark) => {
+      mark.classList.remove('manual-mark-current');
+    });
+    searchableSections.forEach((section) => section.classList.remove('search-current'));
+    const activeMatch = searchMatches[currentSearchIndex];
+    activeMatch.classList.add('manual-mark-current');
+    const section = activeMatch.closest('.chapter, .cover');
+    if (section) section.classList.add('search-current');
+    activeMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    updateSearchControls();
+  };
+
+  const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  const highlightMatchesInSection = (section, query) => {
+    const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        const parentTag = node.parentElement && node.parentElement.tagName;
+        if (parentTag === 'SCRIPT' || parentTag === 'STYLE' || parentTag === 'MARK') {
+          return NodeFilter.FILTER_REJECT;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const textNodes = [];
+    while (walker.nextNode()) {
+      textNodes.push(walker.currentNode);
+    }
+
+    const regex = new RegExp(escapeRegExp(query), 'gi');
+
+    textNodes.forEach((node) => {
+      const text = node.nodeValue || '';
+      if (!regex.test(text)) return;
+      regex.lastIndex = 0;
+
+      const fragment = document.createDocumentFragment();
+      let lastIndex = 0;
+      let match;
+
+      while ((match = regex.exec(text)) !== null) {
+        if (match.index > lastIndex) {
+          fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+        }
+
+        const mark = document.createElement('mark');
+        mark.className = 'manual-mark';
+        mark.textContent = match[0];
+        fragment.appendChild(mark);
+        lastIndex = match.index + match[0].length;
+      }
+
+      if (lastIndex < text.length) {
+        fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+      }
+
+      node.parentNode.replaceChild(fragment, node);
+    });
+  };
+
+  const runSearch = () => {
+    const query = searchInput.value.trim();
+    clearSearchHighlights();
+    searchMatches = [];
+    currentSearchIndex = -1;
+
+    if (!query) {
+      updateSearchControls();
+      return;
+    }
+
+    searchableSections.forEach((section) => {
+      highlightMatchesInSection(section, query);
+      const sectionMarks = Array.from(section.querySelectorAll('.manual-mark'));
+      if (sectionMarks.length > 0) {
+        searchMatches.push(...sectionMarks);
+      }
+    });
+
+    if (searchMatches.length > 0) {
+      focusSearchMatch(0);
+      return;
+    }
+
+    updateSearchControls();
+  };
+
+  searchInput.addEventListener('input', runSearch);
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (searchMatches.length > 0) {
+        focusSearchMatch(currentSearchIndex + 1);
+      } else {
+        runSearch();
+      }
+    }
+
+    if (event.key === 'Escape') {
+      searchInput.value = '';
+      runSearch();
+    }
+  });
+
+  prevButton.addEventListener('click', () => focusSearchMatch(currentSearchIndex - 1));
+  nextButton.addEventListener('click', () => focusSearchMatch(currentSearchIndex + 1));
+  clearButton.addEventListener('click', () => {
+    searchInput.value = '';
+    runSearch();
+    searchInput.focus();
+  });
+
+  updateSearchControls();
+</script>
+</body>
+</html>

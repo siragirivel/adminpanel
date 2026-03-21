@@ -1,0 +1,610 @@
+.page {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --dark: #111827;
+  --text: #111827;
+  --muted: #6b7280;
+  --hint: #9ca3af;
+  --border: #e5e7eb;
+  --border2: #d1d5db;
+  --accent: #6366f1;
+  --accentDim: rgba(99, 102, 241, 0.08);
+  --accentBd: rgba(99, 102, 241, 0.2);
+  --green: #16a34a;
+  --greenDim: rgba(22, 163, 74, 0.08);
+  background: var(--bg);
+  border-radius: 28px;
+  padding: 24px;
+  font-family: inherit;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  max-width: 1100px;
+  margin: 0 auto;
+  gap: 32px;
+  align-items: start;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.pageHead {
+  margin-bottom: 36px;
+}
+
+.headTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--accentDim);
+  border: 1px solid var(--accentBd);
+  border-radius: 6px;
+  padding: 4px 11px;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.headTagDot,
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 1.8s ease-in-out infinite;
+}
+
+.pageTitle {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.pageSub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.sectionNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono), monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sectionSub {
+  font-size: 11px;
+  color: var(--hint);
+  margin-top: 1px;
+}
+
+.sectionDivider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 18px;
+}
+
+.fieldGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.cols2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.required {
+  color: var(--accent);
+}
+
+.optional {
+  color: var(--hint);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.input,
+.select {
+  border: none;
+  border-bottom: 1.5px solid var(--border2);
+  background: transparent;
+  padding: 10px 0;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.18s;
+}
+
+.input:focus,
+.select:focus {
+  border-bottom-color: var(--accent);
+}
+
+.input::placeholder {
+  color: var(--hint);
+}
+
+.inputError {
+  border-bottom-color: #dc2626;
+}
+
+.fieldHint,
+.errorText {
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+.fieldHint {
+  color: var(--hint);
+}
+
+.errorText {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23a8a79f' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 2px center;
+  background-size: 18px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.carIdWrap {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1.5px solid var(--accentBd);
+}
+
+.carIdPrefix {
+  font-size: 15px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+  color: var(--hint);
+  padding: 10px 0;
+}
+
+.carIdVal {
+  font-size: 20px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 10px 0;
+}
+
+.carIdBadge {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accentDim);
+  border: 1px solid var(--accentBd);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.04em;
+}
+
+.helperText {
+  font-size: 11px;
+  color: var(--hint);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.uploadGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.uploadZone {
+  border: 1.5px dashed var(--border2);
+  border-radius: 12px;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  justify-content: center;
+}
+
+.uploadZone:hover,
+.dragOver {
+  border-color: var(--accent);
+  background: var(--accentDim);
+}
+
+.hasImage {
+  border-style: solid;
+  border-color: var(--border2);
+  padding: 0;
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.uploadIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hint);
+}
+
+.uploadLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  text-align: center;
+}
+
+.uploadSub {
+  font-size: 10px;
+  color: var(--hint);
+  text-align: center;
+}
+
+.uploadPreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.uploadOverlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.hasImage:hover .uploadOverlay {
+  display: flex;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 8px;
+  flex-wrap: wrap;
+}
+
+.registerButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 32px;
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.registerButton:hover:not(:disabled) {
+  background: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232, 93, 38, 0.25);
+}
+
+.registerButton:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.cancelButton {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.cancelButton:hover {
+  color: var(--accent);
+}
+
+.actionNote {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--hint);
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 40px;
+}
+
+.previewCard {
+  background: var(--dark);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.previewTop {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.previewTag {
+  font-size: 9px;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.previewCarId {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.previewCarIdAccent {
+  color: var(--accent);
+}
+
+.previewDate {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 5px;
+  font-family: var(--font-mono), monospace;
+}
+
+.previewBody {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.previewRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.previewLabel {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.previewValue {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  text-align: right;
+}
+
+.previewEmpty {
+  color: rgba(255, 255, 255, 0.2);
+  font-style: italic;
+  font-size: 12px;
+}
+
+.previewFooter {
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statusDot {
+  background: #4ade80;
+  flex-shrink: 0;
+}
+
+.statusText {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: var(--font-mono), monospace;
+}
+
+.tipsCard {
+  background: var(--card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+}
+
+.tipsTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tipItem:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.tipIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.tipText {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.tipText strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .right {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 16px;
+  }
+
+  .cols2,
+  .uploadGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .actionNote {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
