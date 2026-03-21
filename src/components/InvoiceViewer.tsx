@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Download, Loader2, File } from "lucide-react";
+import { ArrowLeft, Download, Loader2, FileText } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/lib/supabase";
 import { generateInvoicePDF } from "@/lib/pdf-service";
@@ -375,7 +375,7 @@ export function InvoiceViewer({ invoiceId }: { invoiceId: string }) {
 
             <div className="mt-10 flex items-center justify-between border-t border-slate-200 pt-6 text-xs text-slate-400">
               <div className="flex items-center gap-2">
-                <File className="h-4 w-4 text-slate-300" />
+                <FileText className="h-4 w-4 text-slate-300" />
                 Computer generated invoice. No signature required for digital copy.
               </div>
               <div>

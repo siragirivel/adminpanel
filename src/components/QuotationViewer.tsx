@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Download, File, Loader2, Repeat } from "lucide-react";
+import { ArrowLeft, Download, FileText, Loader2, Repeat } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -184,7 +184,7 @@ export function QuotationViewer({ quotationId }: { quotationId: string }) {
               onClick={() => router.push(`/quotations/edit/${quotation.id}`)}
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
-              <File className="h-4 w-4" />
+              <FileText className="h-4 w-4" />
               Edit Quotation
             </button>
             <button
@@ -431,7 +431,7 @@ export function QuotationViewer({ quotationId }: { quotationId: string }) {
 
             <div className="mt-10 flex items-center justify-between border-t border-slate-200 pt-6 text-sm text-slate-500">
               <div className="flex items-center gap-2">
-                <File className="h-4 w-4 text-slate-400" />
+                <FileText className="h-4 w-4 text-slate-400" />
                 This is a computer generated quotation.
               </div>
               <div>{quotation.quotation_number}</div>
