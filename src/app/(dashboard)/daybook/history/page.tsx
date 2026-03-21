@@ -11,6 +11,7 @@ import {
   Trash2,
   X,
   FileText,
+  Download,
 } from "lucide-react";
 import { format, startOfMonth } from "date-fns";
 import toast from "react-hot-toast";
@@ -190,6 +191,36 @@ export default function DayBookHistoryPage() {
     }
   };
 
+  const handleDownloadCSV = () => {
+    if (filteredData.length === 0) {
+      toast.error("No entries to export");
+      return;
+    }
+
+    const headers = ["Date", "Description", "Type", "Amount", "Mode", "Note", "Created By"];
+    const rows = filteredData.map((entry) => [
+      format(new Date(entry.date), "dd MMM yyyy"),
+      entry.description,
+      entry.type,
+      entry.amount,
+      entry.payment_mode,
+      entry.note || "",
+      entry.profiles?.username || "Admin",
+    ]);
+
+    const csvContent = [headers, ...rows].map((row) => row.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `DayBook_History_${format(new Date(), "yyyy-MM-dd")}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("CSV Downloaded");
+  };
+
   const filteredData = useMemo(() => {
     return data.filter((entry) => {
       const matchSearch =
@@ -262,13 +293,22 @@ export default function DayBookHistoryPage() {
             <h1 className="text-[24px] font-semibold text-[#111827] tracking-tight">Full History</h1>
             <p className="text-[14px] text-[#6b7280] mt-1">All recorded debit and credit entries.</p>
           </div>
-          <Link
-            href="/daybook"
-            className="flex items-center gap-2 bg-[#6366f1] text-white rounded-[8px] px-5 h-10 text-[13px] font-semibold hover:opacity-90 transition-all decoration-none"
-          >
-            <Plus className="w-4 h-4" />
-            New entry
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleDownloadCSV}
+              className="flex items-center gap-2 border border-[#e5e7eb] text-[#374151] rounded-[8px] px-5 h-10 text-[13px] font-semibold hover:bg-slate-50 transition-all font-['DM_Sans']"
+            >
+              <Download className="w-4 h-4" />
+              Download CSV
+            </button>
+            <Link
+              href="/daybook"
+              className="flex items-center gap-2 bg-[#6366f1] text-white rounded-[8px] px-5 h-10 text-[13px] font-semibold hover:opacity-90 transition-all decoration-none"
+            >
+              <Plus className="w-4 h-4" />
+              New entry
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-10 animate-in fade-in zoom-in-95 duration-500">
